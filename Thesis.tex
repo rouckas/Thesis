@@ -38,7 +38,7 @@
 %		 * [high] Check this out: http://www.golatex.de/koma-script-warnung-in-verbindung-mit-listings-package-t2058.html
 %    * [medium] mathbb in section-titles/chapter-titles => disappears somehow in headlines!!!
 % **************************************************************************************************************
-\documentclass[ twoside,openright,titlepage,numbers=noenddot,headinclude,%1headlines,% letterpaper a4paper
+\documentclass[ oneside,openright,titlepage,numbers=noenddot,headinclude,%1headlines,% letterpaper a4paper
                 footinclude=true,cleardoublepage=empty,abstractoff, % <--- obsolete, remove (todo)
                 BCOR=5mm,paper=a4,fontsize=11pt,%11pt,a4paper,%
                 ngerman,american,%
@@ -59,6 +59,7 @@
 %*******************************************************
 \newcommand{\mb}{\mathbold}
 \PrerenderUnicode{ě}
+\PrerenderUnicode{á}
 \PrerenderUnicode{Ě}
 
 \begin{document}
@@ -73,10 +74,10 @@
 % Frontmatter
 %*******************************************************
 \include{FrontBackmatter/Titlepage}
-\clearpage\include{FrontBackmatter/Declaration}
-\clearpage\include{FrontBackmatter/Abstract}
-\clearpage\include{FrontBackmatter/Publication}
-\clearpage\include{FrontBackmatter/Acknowledgments}
+%\clearpage\include{FrontBackmatter/Declaration}
+%\clearpage\include{FrontBackmatter/Abstract}
+%\clearpage\include{FrontBackmatter/Publication}
+%\clearpage\include{FrontBackmatter/Acknowledgments}
 \pagestyle{scrheadings}
 \clearpage\include{FrontBackmatter/Contents}
 %********************************************************************
@@ -86,7 +87,7 @@
 %\setcounter{page}{90}
 % use \cleardoublepage here to avoid problems with pdfbookmark
 \cleardoublepage
-\include{Chapters/chap-intro}
+%\include{Chapters/chap-intro}
 %\addtocontents{toc}{\protect\clearpage} % <--- just debug stuff, ignore
 \include{Chapters/chap-simulation}
 %\include{multiToC} % <--- just debug stuff, ignore for your documents

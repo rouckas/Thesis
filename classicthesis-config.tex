@@ -38,17 +38,19 @@
 \PassOptionsToPackage{utf8x}{inputenc}	% latin9 (ISO-8859-9) = latin1+"Euro sign"
 \usepackage{ucs}
  \usepackage{inputenc}
-
+\PrerenderUnicode{š}
+\PrerenderUnicode{ě}
+\PrerenderUnicode{á}
 % ****************************************************************************************************
 % 2. Personal data and user ad-hoc commands
 % ****************************************************************************************************
 \newcommand{\myTitle}{Experimental Techniques for Laboratory Astrochemistry\xspace}
 \newcommand{\mySubtitle}{Experimental Techniques for Laboratory Astrochemistry\xspace}
 \newcommand{\myDegree}{Mgr.\xspace}
-\newcommand{\myName}{{\v S}t{ě}p{\'a}n Rou{\v c}ka\xspace}
-\newcommand{\myProf}{Juraj Glosík\xspace}
+\newcommand{\myName}{Štěpán Roučka\xspace}
+\newcommand{\myProf}{Prof. RNDr. Juraj Glosík, DrSc.\xspace}
 \newcommand{\myOtherProf}{Někdo\xspace}
-\newcommand{\mySupervisor}{Rudolf Hrach\xspace}
+\newcommand{\mySupervisor}{Prof. RNDr. Rudolf Hrach, DrSc.\xspace}
 \newcommand{\myFaculty}{Faculty of Mathematics and Physics\xspace}
 \newcommand{\myDepartment}{Department of Surface and Plasma Science\xspace}
 \newcommand{\myUni}{Charles University in Prague\xspace}
@@ -70,6 +72,9 @@
 \newcommand{\Eg}{E.\,g.}
 % ****************************************************************************************************
 
+\usepackage{color}
+\usepackage{soul}
+\newcommand{\comment}{\hl}
 
 % ****************************************************************************************************
 % 3. Loading some handy packages
@@ -83,7 +88,8 @@
 %\PassOptionsToPackage{spanish,es-lcroman}{babel}
  \usepackage{babel}
 
-\PassOptionsToPackage{square,numbers}{natbib}
+\PassOptionsToPackage{square}{natbib}
+%\PassOptionsToPackage{square,numbers}{natbib}
  \usepackage{natbib}
 
 \PassOptionsToPackage{fleqn}{amsmath}		% math environments and more by the AMS

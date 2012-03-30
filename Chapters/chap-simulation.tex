@@ -1,7 +1,7 @@
 
 \chapter{Modelling of electromagnetic fields}
 
-\label{ch:Modelling}In principle almost all processes occuring in
+\label{ch:Modelling}In principle almost all processes occurring in
 the fields of molecular and atomic physics can be reduced to electromagnetic
 interaction of elementary particles. However, for the purpose of this
 chapter we limit our discussion only to large scale electrostatic
@@ -9,7 +9,9 @@ and magnetostatic fields. These are determined in the experiment by
 applied potentials to the electrodes, currents in the electromagnets,
 and spatial distribution of charged particles in case of plasmatic
 experiments. Proper understanding of large scale electromagnetic fields
-is essential for any experiment involving charged particles. In this
+is essential for any experiment involving charged particles, because these fields
+consequently determine the spatial and energetic distributions of the studied
+particles. In this
 section, we explain our use of numerical models to obtain magnetic
 and electric fields as a solution to Maxwell's equations
 
@@ -25,6 +27,7 @@ in combination with material relations
 \mathbold{D}=\epsilon\mathbold{E},\;\mathbold{H}=\mathbold{B}/\mu,\;\mathbold{J}=\sigma\mathbold{E}\text{.}
 \label{eq:sim:materials}
 \end{equation}
+\comment{Define the symbols, use acronym package}
 In the case of static fields, the time derivatives can be neglected.
 In our experimental setups, the electrostatic field is completely
 determined by the electrode potentials and space charge densities
@@ -36,20 +39,140 @@ and magnetic fields will be presented in the next sections.
 
 Please note, that we do not discuss complete mathematical foundations of the involved numerical methods. Only the principles and the 
 information necessary to implement these methods with help of
-freely available libraries are. For detailed discussion refer to any 
-textbook \cite{fenicsbook}.
+freely available libraries are presented. For detailed discussion refer to textbooks on
+computational physics or plasma modelling \eg\ \cite{fenicsbook,bossavit1998,birdsall1991,hockney1988}.
 
 
 \section{Electrostatic fields}
 
-The governing equation for electrostatic field is the the Poisson
+The governing equation for electrostatic field is the Poisson
 equation. Since we are interested in the field in vacuum, we can substitute
 for $\mathbold{D}$ from the material equation (\ref{eq:sim:materials}). Then using the relation for the scalar potential $\mb E = -\nabla \phi$ we obtain
 \begin{equation}
 \Delta\phi=-\frac{\rho}{\epsilon_{0}}\text{.}
 \end{equation}
-Now in order to solve for the potential $\phi$ in certain domain $\Omega$, we need to specify the charge density $\rho$ in this domain and the boundary conditions (Dirichlet, Neumann, or mixed) on the domain boundary $\partial\Omega$.
+Now in order to solve for the potential $\phi$ in certain domain $\Omega$, we need to specify the
+charge density $\rho$ in this domain and the boundary conditions (Dirichlet, Neumann, or mixed)
+on the domain boundary $\partial\Omega$.
 
+\subsection{Finite difference method}
+Probably the simplest approach to solving this kind of problem is the \ac{FDM}.
+Said method replaces the continuous functions by functions defined on a discrete set of points and
+the differential operators are replaced by finite differences operating on these points.
+In particular, in Cartesian coordinates we use the central differences with second order accuracy 
+($O(\Delta x^2)$)
+\begin{equation}
+\frac{\partial f_i}{\partial x} \approx \frac{f_{i+1/2} - f_{i-1/2}}{\Delta x}\;,\qquad
+\frac{\partial^2 f_i}{\partial x^2} \approx \frac{f_{i-1} - 2f_i + f_{i+1}}{\Delta x^2}\;.
+\end{equation}
+In the above equation, a standard nomenclature for expressing difference equations is used, \ie\ 
+$f_j \equiv f(x_j);\; x_j \equiv j\Delta x$, where $\Delta x$ is the spacing between grid points.
+We assume the simple case of homogeneous grid, \ie\ $\Delta x = \text{const.}$.
 
+The Poisson equation on a homogeneous isotropic two-dimensional Cartesian grid ($\Delta x = \Delta y = \text{const.}$) can thus
+be converted into a set of linear equations of the form
+\begin{equation}
+\frac{4\phi_{ij} - \phi_{i-1,j} - \phi_{i+1,j} - \phi_{i,j-1} - \phi_{i,j+1}}
+    {\Delta x^2} = \frac{\rho_{ij}}{\epsilon_0}\;;\quad \mb r_{ij} \in \Omega\setminus\partial\Omega\text,
+\label{eq_sim_poiscart}
+\end{equation}
+where we define the position vector as $\mb r_{ij} = (x_{ij}, y_{ij})$.
+In combination with Dirichlet boundary conditions
+\begin{equation}
+\phi_{ij} = \phi^0_{ij}\;;\quad \mb r_{ij} \in \partial\Omega\text,
+\label{eq_sim_boundary}
+\end{equation}
+these equations fully determine the desired solution.
+
+The situation is more complicated in case of non-Cartesian grids. It is,
+however useful to use curvilinear coordinate systems that can accommodate to the symmetry of the studied problem.
+In our experiments we often deal with cylindrically symmetric situation and therefore we implement a solver of Poisson equation in the 2-dimensional
+$r$-$z$ cylindrical coordinates.
+The discretization of the Laplace operator
+in cylindrical coordinates using the Gauss' law is described in the section 14-10 of \cite{birdsall1991}.
+The radial part for the case of homogeneous grid spacing in the radial direction can be written as
+\begin{equation}
+\Delta_r\phi\approx
+\begin{cases}
+    \displaystyle\frac{(i-1/2)\phi_{i-1} - 2i\phi_{i} + (i+1/2)\phi_{i+1}}
+    {i\Delta r^2} & r_{i} \in \Omega\setminus\partial\Omega; i\neq0\\
+    \displaystyle\frac{\phi_{1} - \phi_{0}}
+    {\Delta r^2} & i=0\text.
+\end{cases}
+\end{equation}
+The axial part of the Laplace operator is the same as in the Cartesian
+coordinates. By summing the axial and radial parts, we can obtain the discrete approximation for the
+Laplace operator in $r$-$z$ coordinates and the Poisson equation then reads
+\begin{subequations}
+\begin{multline}
+\frac{\rho_{ij}}{\epsilon_0} = 
+    -\frac{(i-1/2)\phi_{i-1,j} - 2i\phi_{ij} + (i+1/2)\phi_{i+1,j}}
+    {i\Delta r^2}\\
+    -\frac{\phi_{i,j-1} - 2\phi_{ij} + \phi_{i,j+1}}
+    {\Delta z^2}\,;\quad\hfill
+ r_{ij} \in \Omega\setminus\partial\Omega; i\neq0,\\
+\end{multline}
+\begin{multline}
+\frac{\rho_{ij}}{\epsilon_0} = 
+    -\frac{\phi_{1,j} - \phi_{0,j}}
+    {\Delta r^2}
+    -\frac{\phi_{i,j-1} - 2\phi_{ij} + \phi_{i,j+1}}
+    {\Delta z^2}\,;\quad\hfill
+ r_{ij} \in \Omega\setminus\partial\Omega; i=0.\\
+\end{multline}
+\end{subequations}
+
+One of the most powerful methods for solving the finite differenced Poisson equation is based on the
+{\em LU decomposition} \citep{pekarek2007ipm}. To explain the principle of this method, assume that
+the set of equations (\ref{eq_sim_poiscart}), (\ref{eq_sim_boundary}) is written in the matrix form
+\begin{equation}
+\mb A\mb\phi = \mb\rho\,.
+\label{eq:sim:matrix}
+\end{equation}
+\comment{Does this need further explanation? The vector $\mb\rho$ contains elements from $\rho_{ij}$
+and $\phi_{ij}$, so perhaps a different name should be chosen?} The square matrix $\mb A$ has order $n$
+and can be decomposed into an upper triangular matrix $\mb U$ and a lower triangular matrix $\mb L$, \ie\ $\mb A=\mb L\mb U$.
+Using this LU decomposition, we can rewrite equation (\ref{eq:sim:matrix}) into a system of equations
+\begin{subequations}
+\label{eq:sim:LUset}
+\begin{eqnarray}
+\mb U\mb\phi &=& \mb x\\
+\mb L\mb x &=& \mb \rho\,,
+\end{eqnarray}
+\end{subequations}
+which can be solved easily using backsubstitution thanks to the triangular shape of $\mb L$ and $\mb U$.
+The most complicated step in this solution procedure is (as could be expected) the calculation
+of the LU decomposition, which has algorithmic complexity $O(n^3)$ for general and practically useful algorithms. Despite
+the complexity of the decomposition, this procedure is very useful for selfconsistent simulations
+of plasmas, since the decomposition needs to be calculated only once for the given geometry. The
+solutions for various combinations of charge densities and boundary conditions can then be
+obtained very
+quickly by varying the right hand side vector $\mb \rho$ in equations (\ref{eq:sim:LUset}).
+
+In our calculations we use the freely available library UMFPACK \citep{umfpack}. The UMFPACK
+decomposition algorithms are optimized for dealing with sparse matrices, so they can take advantage
+of the sparse structure of matrix $\mb A$, which is essential for performing this calculation
+with large matrices on personal computers.
+Typical mesh sizes used in our calculations are of the order $200\times200$,
+therefore the matrix $\mb A$ is typically of the order $40\,000$ and contains $1.6\cdot10^9$ elements,
+of which only about $200\,000$ elements are nonzero.
+Since only nonzero elements need to be stored, this matrix is easily calculated and stored in the
+memory of a personal computer.
+The LU decomposition of a sparse matrix is not sparse in general.
+However, the UMFPACK library can ensure by preordering of matrix $\mb A$ optimal sparsity and accuracy
+of the LU decomposition.
+For details of the UMFPACK algorithm see \citep{davis2004,davis1999}.
+
+The finite difference methods offer a relatively simple and efficient solution
+for dealing with partial differential equations on simple geometries.
+However, it becomes very difficult to accommodate the regular mesh
+and difference equations to
+the complicated geometries of many real experiments.
+Therefore, the complementary \ac{FEM} is used in
+most cases with irregular geometry.
+
+\subsection{Finite element method}
+The finite element method approaches the solution by converting the
+\ac{PDE} into a variational problem called {\em weak formulation}.
 
 \section{Magnetostatic fields}
