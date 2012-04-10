@@ -15,13 +15,21 @@ particles. In this
 section, we explain our use of numerical models to obtain magnetic
 and electric fields as a solution to Maxwell's equations
 
-\begin{eqnarray}
-\nabla\cdot\mathbold{D} & = & \rho\\
-\nabla\cdot\mathbold{B} & = & 0\\
-\nabla\times\mathbold{E} & = & \frac{\partial\mathbold{B}}{\partial t}\\
-\nabla\times\mathbold{H} & = & \mathbold{J}+\frac{\partial\mathbold{D}}{\partial t}\text{{,}}
+\begin{subequations}
+\begin{align}
+\nabla\cdot\mathbold{D} & =  \rho & \text{Gauss's law,}
+\label{eq:sim:gauss}\\
+\nabla\cdot\mathbold{B} & =  0 &\text{no monopoles,}
+\label{eq:sim:nomono}\\
+\nabla\times\mathbold{E} & =  \frac{\partial\mathbold{B}}{\partial t} 
+&\text{Faraday's law,}
+\label{eq:sim:faraday}\\
+\nabla\times\mathbold{H} & =  \mathbold{J}+\frac{\partial\mathbold{D}}{\partial t}
+&\text{Amp\`ere's law,}
+\label{eq:sim:ampere}
+\end{align}
 \label{eq:sim:maxwell}
-\end{eqnarray}
+\end{subequations}
 in combination with material relations
 \begin{equation}
 \mathbold{D}=\epsilon\mathbold{E},\;\mathbold{H}=\mathbold{B}/\mu,\;\mathbold{J}=\sigma\mathbold{E}\text{.}
@@ -49,11 +57,16 @@ The governing equation for electrostatic field is the Poisson
 equation. Since we are interested in the field in vacuum, we can substitute
 for $\mathbold{D}$ from the material equation (\ref{eq:sim:materials}). Then using the relation for the scalar potential $\mb E = -\nabla \phi$ we obtain
 \begin{equation}
-\Delta\phi=-\frac{\rho}{\epsilon_{0}}\text{.}
+\Delta\phi=-\frac{\rho}{\epsilon_{0}}\;;\quad \mb r\in\Omega\text{.}
 \end{equation}
+\comment{define $\mb r$ somewhere}
 Now in order to solve for the potential $\phi$ in certain domain $\Omega$, we need to specify the
 charge density $\rho$ in this domain and the boundary conditions (Dirichlet, Neumann, or mixed)
-on the domain boundary $\partial\Omega$.
+on the domain boundary $\partial\Omega$. In our calculations, we deal only with Dirichlet boundary
+conditions, \ie
+\begin{equation}
+\phi=\phi_{0}\;;\quad \mb r\in\Omega\text{.}
+\end{equation}
 
 \subsection{Finite difference method}
 Probably the simplest approach to solving this kind of problem is the \ac{FDM}.
@@ -149,17 +162,17 @@ solutions for various combinations of charge densities and boundary conditions c
 obtained very
 quickly by varying the right hand side vector $\mb \rho$ in equations (\ref{eq:sim:LUset}).
 
-In our calculations we use the freely available library UMFPACK \citep{umfpack}. The UMFPACK
+In this work we use the freely available library \ac{UMFPACK} \citep{umfpack}. The UMFPACK
 decomposition algorithms are optimized for dealing with sparse matrices, so they can take advantage
 of the sparse structure of matrix $\mb A$, which is essential for performing this calculation
 with large matrices on personal computers.
 Typical mesh sizes used in our calculations are of the order $200\times200$,
 therefore the matrix $\mb A$ is typically of the order $40\,000$ and contains $1.6\cdot10^9$ elements,
 of which only about $200\,000$ elements are nonzero.
-Since only nonzero elements need to be stored, this matrix is easily calculated and stored in the
+Since only the nonzero elements need to be stored, this matrix is easily calculated and stored in the
 memory of a personal computer.
 The LU decomposition of a sparse matrix is not sparse in general.
-However, the UMFPACK library can ensure by preordering of matrix $\mb A$ optimal sparsity and accuracy
+However, the UMFPACK library can ensure by preordering of the matrix $\mb A$ optimal sparsity and accuracy
 of the LU decomposition.
 For details of the UMFPACK algorithm see \citep{davis2004,davis1999}.
 
@@ -173,6 +186,105 @@ most cases with irregular geometry.
 
 \subsection{Finite element method}
 The finite element method approaches the solution by converting the
-\ac{PDE} into a variational problem called {\em weak formulation}.
+\ac{PDE} into a variational problem called the {\em weak formulation}.
+This procedure generally consists of multiplying the equation by a test function
+$v$ and integrating over the domain $\Omega$. For Poisson equation we thus obtain using the
+Green's identity (integration by parts)
+\begin{equation}
+\int_\Omega \nabla\phi\cdot\nabla v\de\mb r = \int_\Omega\frac{\rho}{\epsilon_0}v\de\mb r\,.
+\label{eq:sim:weak}
+\end{equation}
+We drop the boundary integral, because we choose test functions equal zero on the Dirichlet boundary,
+where $\phi$ is known. Solving Poisson equation is now equivalent to finding $\phi\in V$ such
+that equation \eqref{eq:sim:weak} is satisfied for all $v\in \hat V$.
+The test space $\hat V$ is defined as
+\begin{equation}
+\hat V = \{v\in H^1(\Omega) : v=0\ \text{on}\ \partial\Omega\}\,,
+\end{equation}
+and we are looking for $\phi$ in a trial space $V$, which automatically satisfies the Dirichlet
+boundary condition
+\begin{equation}
+V = \{v\in H^1(\Omega) : v=\phi_0\ \text{on}\ \partial\Omega\}\,.
+\end{equation}
+Symbol $H^1(\Omega)$, denotes a Sobolev space of functions $v$ defined as $H^1(\Omega) = \{v\in L^2(\Omega); |\nabla v|^2 \in L^2(\Omega)\}$.
+
+In order to solve this infinitely dimensional problem numerically, we have to restrict the
+functions to some finitely dimensional subspaces $V_h \subset V$ and $\hat V_h\subset\hat V$ with
+dimension $N$. In particular, the finite element method uses a basis consisting of piecewise
+polynomial functions with ``small support''. The basis functions are defined in relation
+to a certain discrete mesh and are called {\em finite elements}, hence the name finite element
+method. For more information on various finite elements, see \eg\ \citep{fenicsbook}
+\comment{I have to find the other reference}.
+Assuming that the bases for our problem are defined by
+ $\{v_k\}_{k=1}^N$ and $\{\hat v_k\}_{k=1}^N$, then the approximate
+solution $\phi_h \in V_h$ can be written as
+\begin{equation}
+\phi_h = \sum_{k=1}^N U_k v_k\,.
+\end{equation}
+The values of coefficients are obtained by solving equation \eqref{eq:sim:weak} for all the
+basis functions from the test space $\hat V_h$, \ie
+\begin{equation}
+\sum_{k=1}^N U_k\int_\Omega \nabla v_k\cdot\nabla \hat v_l\de\mb r =
+ \int_\Omega\frac{\rho}{\epsilon_0} \hat v_l \de\mb r\,;\quad i=1,2,\ldots,N\,.
+\end{equation}
+This set of linear equations has a sparse matrix in the matrix formulation and can be solved
+by the same methods as the finite difference equations.
+
+\subsection{Implementation of finite element method}
 
 \section{Magnetostatic fields}
+Similarly to the electrostatic field, also the Maxwell's equations for the
+magnetostatic field can be converted into a single second order equation
+using a potential formulation. From equation \eqref{eq:sim:nomono} we
+see, using the Helmholtz decomposition, that $\mb B$ can be expressed
+as $\mb B = \nabla\times\mb A$. The Amp\`ere's law \eqref{eq:sim:ampere}
+then reads
+\begin{equation}
+\nabla\times\frac{1}{\mu}\nabla\times\mb A = \mb J\text{.}
+\end{equation}
+In combination with known current density $\mb J$ and magnetic
+permitivity $\mu$ in domain $\Omega$ and with boundary contitions
+for $\mb B$ on $\partial\Omega$,
+the Amp\'ere's law specifies the magnetic field $\mb B$. However,
+the vector potential is specified only up to a non-rotational
+component $\nabla\psi$. Therefore, we have to add additional
+gauge equation to make the problem well posed. We use the
+Coulomb gauge
+\begin{equation}
+\nabla\cdot\mb A = 0\,,
+\end{equation}
+to remove the ambiguity.
+Now, following the standard method for deriving the weak formulation,
+we multiply the equation by a test function $\mb v$ and perform
+integration by parts to obtain
+\begin{equation}
+\int_\Omega\frac{1}{\mu}\nabla\times\mb A\cdot \nabla\times\mb v\de \mb r
+= \int_\Omega \mb J\cdot\mb v\de\mb r\,.
+\end{equation}
+In order to introduce the gauge condition, we reformulate the problem
+as: find such $\mb A\in V$ and $p\in Q$ that equations
+\begin{subequations}
+\label{eq:sim:curlcurl}
+\begin{equation}
+\int_\Omega\frac{1}{\mu}\nabla\times\mb A\cdot \nabla\times\mb v\de \mb r
++ \int_\Omega v\cdot\nabla p\de\mb r
+= \int_\Omega \mb J\cdot\mb v\de\mb r\,,
+\end{equation}
+\begin{equation}
+\int_\Omega \mb A\cdot\nabla q\de\mb r =0\,,
+\end{equation}
+\end{subequations}
+hold for all $\mb v\in \hat V$, $q\in \hat Q$. The trial and test spaces
+are defined as
+$V = \hat V = \{ \mb v\in H(\curl,\Omega): \mb v = (0,0,0)\  \text{on}\ \partial \Omega\}$  and
+$Q = \hat Q = \{ q\in H^1(\Omega): q = 0\  \text{on}\ \partial \Omega\}$. 
+The symbol $H(\curl,\Omega)$, denotes a Sobolev space of functions
+$\mb v$ defined as $H(\curl,\Omega) = \{\mb v\in L^2(\Omega); |\nabla\times\mb v|^2 \in L^2(\Omega)\}$.
+Equations \eqref{eq:sim:curlcurl} can be understood as a constrained
+optimization of the magnetic field energy functional using the method
+of Lagrange multipliers. However, for a proper discussion in relation
+to the finite element method, see \eg\ \citep{haase2001} or lecture notes
+by \cite{schoberl2009}.
+
+\subsection{Implementation of finite element method for magnetostatics}
+FENiCS
