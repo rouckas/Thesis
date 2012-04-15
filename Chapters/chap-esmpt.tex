@@ -30,7 +30,8 @@ and is easily expressed in the cylindrical coordinates as
 \end{equation}
 where $\hat{\mb r}$ denotes a unit vector in the direction of the $r$
 coordinate. The integration constant $C_E$ is determined by the
-electrode dimensions and potentials.
+electrode dimensions and potentials. The magnetic field $\mb B$ is
+homogeneous, constant and parallel to the $z$ axis.
 
 To simplify our discussion, we choose a particular
 boundary conditions for electric field and initial conditions
@@ -74,7 +75,7 @@ at a solution in the form
 \begin{equation}
 m\frac{\de^2\mb R_0}{\de t^2} =
 \frac{q^2}{4m\Omega^2}\nabla\mb E_0^2 +
-q\frac{\de^2 \mb R_0}{\de t}\times \mb B\,.
+q\frac{\de \mb R_0}{\de t}\times \mb B\,.
 \label{eq:esmpt:secular}
 \end{equation}
 Here we again obtain an equation completely in terms of the
@@ -94,8 +95,31 @@ of the magnetron. Here we introduce the terms {\em RF
 guiding center} and {\em magnetic guiding center} which
 denote the guiding center obtained by averaging over one \ac{RF}
 period or over one cyclotron rotation respectively.
-The $\mb F\times \mb B$ drift velocity in a non-uniform
-effective force field \citep{baumjohan2012} is given by equation
+The superposition of small scale \ac{RF} micromotion,
+intermediate scale cyclotron rotation and large scale drift
+motion (also called magnetron motion) is demonstrated in figure
+\ref{fig:esmpt:traj}.
+
+\begin{figure}
+\centering{
+\includegraphics{gfx/trajectory/traj.pdf}
+}
+\caption{Particle trajectory in a cylindrical \ac{RF} magnetron
+for $\Xi\ll 1$.
+The exact trajectory is shown as a thin solid red line. The
+adiabatic approximation resulting from averaging over one
+\ac{RF} period is shown in a thick solid black line. The gyration
+center approximation obtained by further averaging the
+adiabatic approximation over one cyclotron rotation is shown
+as a dashed grey line.}
+\label{fig:esmpt:traj}
+\end{figure}
+
+Inserting expression for the effective potential
+into the general equation of the $\mb F\times \mb B$ 
+drift velocity in a non-uniform
+effective force field \citep{baumjohan2012} yields an equation
+for gyration center motion \comment{unify the terminology - magnetic guiding center, gyration center, cyclotron frequency, Larmor radius, gyroradius, cyclotron radius etc...}
 \begin{equation}
 \frac{\de \mb R_{\mb B}}{\de t} = 
 \frac{q}{4m\Omega^2}
@@ -119,17 +143,66 @@ change the drift velocity by approximately $1\;\%$.
 
 Finally, we can compare the results of our theoretical analysis with
 numerically calculated accurate trajectories.
+\comment{Maybe put some more quantitative comparing the different
+approaches to calculating the trajectory}.
 
+We have observed that the conclusions of the
+adiabatic theory (section \ref{sec:trap}) are still mostly
+valid in the case $\Xi \ll 1$.
+Just simple modifications are needed to account
+for the influence of the magnetic field. Despite the fact, that
+only small magnetic field is used in our experimental setup, we
+will take at least a qualitative look at the particle behavior
+at higher intensities of the magnetic field. Our simulations
+show, that a resonant coupling between the \ac{RF} driving
+force and cyclotron rotation becomes significant already at
+$\Xi\approx0.1$. This coupling is visible as a slight increase
+in the particle kinetic energy. Nevertheless, the particle
+trajectories still follow the adiabatic approximation within
+few percent for $\Xi<0.3$.
 
+As the cyclotron frequency becomes comparable to the excitation
+frequency, the adiabatic approximation is not applicable any more.
+The presence of {\em beats}, typical for mechanical systems near
+resonance is observed, as illustrated by figure \ref{fig:esmpt:beat}.
+The figure shows a part of the trajectory for $\Xi = 0.983$.
+The particle, starting in the center of the right spiral, is
+first spiraling outward due to resonant acceleration. As soon
+as the phase difference between the exciting force and the
+cyclotron rotation grows to $\pi$, the particle continues
+spiraling inward due to resonant deceleration.
 \begin{figure}
 \centering{
-\includegraphics{gfx/trajectory/traj.pdf}
+\includegraphics{gfx/trajectory/beats.pdf}
 }
-\caption{Particle trajectory in a cylindrical \ac{RF} magnetron.
-Figure shows the exact trajectory by thin solid red line. The
-adiabatic approximation resulting from averaging over one
-\ac{RF} period is shown in thick solid black line. The gyration
-center approximation obtained by further averaging the
-adiabatic approximation over one cyclotron rotation is shown
-as dashed grey line.}
+\caption{Particle trajectory near resonance, $\Xi=0.98$.
+Particle starts with zero initial velocity at maximal amplitude of
+\ac{RF} field in the center of the spiral to the right.
+One beat period, which consists of resonant acceleration followed
+by resonant deceleration, is shown.
+The gyration center still follows the magnetron orbit indicated by
+the solid red line.
+}
+\label{fig:esmpt:beat}
+\end{figure}
+
+The figure \ref{fig:esmpt:beat} also demonstrates an important
+observation, that no matter how much energy the particle
+gains by resonant heating, the gyration center always follows
+a circular orbit around the magnetron center. The angular
+velocity of this
+orbiting motion strongly depends on the resonant heating
+and even changes direction when crossing the $\Xi=1$ resonance,
+but the gyration center never leaves this circle, regardless of
+the initial velocity and magnetic field intensity in our simulations.
+
+Finally, the resonance structure
+\begin{figure}
+\centering{
+\includegraphics{gfx/resonances/resonances.pdf}
+}
+\caption{
+Resonances
+}
+\label{fig:esmpt:resonances}
 \end{figure}
