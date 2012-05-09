@@ -19,8 +19,19 @@ general rigorous treatment, our discussion is based on study
 of a specific simple geometry. We will see though, that most
 of our observations could be generalized.
 
+For a theoretical generalization of the effective potential
+and possible applications see \cite{dodin2006,dodin2005}
+and references therein. An important special case of particle
+behavior in combined \ac{RF} and magnetic fields is the
+cyclotron resonance, which has numerous applications, \eg\ 
+mass spectrometry, precision measurements, or particle acceleration.
+In the cyclotron resonance applications however, a strong magnetic field
+is used for particle trapping and a small \ac{RF} field is used for
+exciting the particles, as opposed to our experiments, where particles
+trapped in \ac{RF} field interact with small magnetic field.
+
 Possibly the simplest device featuring inhomogeneous RF electric
-field is the cylindrical capacitor --- a hypothetical device
+field is the cylindrical capacitor---a hypothetical device
 consisting of two infinitely long coaxial cylindrical electrodes.
 The electric field between the electrodes follows from the Gauss' law
 and is easily expressed in the cylindrical coordinates as
@@ -33,20 +44,22 @@ coordinate. The integration constant $C_E$ is determined by the
 electrode dimensions and potentials. The magnetic field $\mb B$ is
 homogeneous, constant and parallel to the $z$ axis.
 
-To simplify our discussion, we choose a particular
+To simplify our discussion, we demonstrate the behavior by calculating
+the trajectories of \Hminus\ under particular
 boundary conditions for electric field and initial conditions
 for particle motion. We will vary only the magnetic field
 intensity. The following \ac{RF} field
 parameters were used:
 $C_E = 0.005\;\text{V}$; $\Omega=10\;\text{MHz}$.
-Then assuming an \Hminus\ particle starting with zero
-initial velocity at a distance of $r_0=50\;\mu\text{m}$ from the
+\comment{rewrite this, maximum initial phase}
+Then assuming an \Hminus\ particle starting
+at a distance of $r_0=50\;\mu\text{m}$ from the
 axis, the adiabaticity parameter given by equation
-\eqref{eq:trap:adiab} takes the value $\eta\approx 0.15$, which
-is safely below the critical threshold $0.3$.
+\eqref{eq:trap:adiab} takes the value $\eta\approx 0.024$, which
+is safely below the critical threshold $0.3$ \citep{gerlich1992}.
 % calc in google
 % 2*elementary charge*100 volt/meter*5e-5 meter/(5e-5 meter)^2 / 
-% (proton mass*2*pi*(20 megahertz)^2)
+% (proton mass*(2*pi*20 megahertz)^2)
 
 An important parameter for describing the interplay of magnetic
 and electric fields in determining the particle trajectory is
@@ -105,7 +118,10 @@ motion (also called magnetron motion) is demonstrated in figure
 \includegraphics{gfx/trajectory/traj.pdf}
 }
 \caption{Particle trajectory in a cylindrical \ac{RF} magnetron
-for $\Xi\ll 1$.
+for $\Xi= 0.038$%
+%\comment{, initial velocity in azimuthal direction
+%$\mb v_0 = 10\;\text{m/s}$}
+.
 The exact trajectory is shown as a thin solid red line. The
 adiabatic approximation resulting from averaging over one
 \ac{RF} period is shown in a thick solid black line. The gyration
@@ -163,8 +179,8 @@ few percent for $\Xi<0.3$.
 
 As the cyclotron frequency becomes comparable to the excitation
 frequency, the adiabatic approximation is not applicable any more.
-The presence of {\em beats}, typical for mechanical systems near
-resonance is observed, as illustrated by figure \ref{fig:esmpt:beat}.
+The presence of {\em beats}--typical for mechanical systems near
+resonance--is observed, as illustrated by figure \ref{fig:esmpt:beat}.
 The figure shows a part of the trajectory for $\Xi = 0.983$.
 The particle, starting in the center of the right spiral, is
 first spiraling outward due to resonant acceleration. As soon
@@ -175,12 +191,12 @@ spiraling inward due to resonant deceleration.
 \centering{
 \includegraphics{gfx/trajectory/beats.pdf}
 }
-\caption{Particle trajectory near resonance, $\Xi=0.98$.
+\caption{Particle trajectory near resonance, $\Xi=0.983$.
 Particle starts with zero initial velocity at maximal amplitude of
 \ac{RF} field in the center of the spiral to the right.
 One beat period, which consists of resonant acceleration followed
 by resonant deceleration, is shown.
-The gyration center still follows the magnetron orbit indicated by
+The gyration center follows the magnetron orbit indicated by
 the solid red line.
 }
 \label{fig:esmpt:beat}
@@ -196,7 +212,20 @@ and even changes direction when crossing the $\Xi=1$ resonance,
 but the gyration center never leaves this circle, regardless of
 the initial velocity and magnetic field intensity in our simulations.
 
-Finally, the resonance structure
+To conclude our analysis, we have numerically calculated the maximum
+energy reached by a test particle as a function of the superimposed
+magnetic field. The result of our calculation for particle starting
+with a zero velocity at a radius $r_0=50\;\mu\text{m}$ is shown in the
+figure~\ref{fig:esmpt:resonances}. Calculations were also performed
+for several higher starting radii up to $250\;\mu\text{m}$ and for
+starting azimuthal velocities in the range $\pm20\;\text{m}/\text{s}$.
+The initial conditions influence the line shapes slightly, but the
+qualitative picture remains the same. The maximum in energy was
+determined
+over $6000$ \ac{RF} oscillations, which correspond to
+$300\;\mu\text{s}$ time.
+The plotted energy is normalized by the local effective potential energy
+at the starting point, $V^*_0=V^*(r_0)$.
 \begin{figure}
 \centering{
 \includegraphics{gfx/resonances/resonances.pdf}
@@ -206,3 +235,15 @@ Resonances
 }
 \label{fig:esmpt:resonances}
 \end{figure}
+We can see in the graph, that for the smallest magnetic fields,
+where $\Xi\lesssim 0.1$, the energy is decreasing, which is caused
+by decreasing Larmor radius. However, already at $\Xi\approx 0.1$ the
+tail of the cyclotron resonance peak starts influencing the energy.
+Additional resonances are observed at integer fractions $1/2$, $1/3$,
+and $1/4$ and also at double of the cyclotron frequency.
+The smallest resonant
+feature, which was found at $\Xi\approx1/4$, is enlarged in
+the top right subplot. Resonances at lower $\Xi$ were not found,
+although some narrow peaks cannot be excluded.
+The very narrow and sharp resonance at $\Xi=1/3$ is enlarged
+in the bottom right subplot.
