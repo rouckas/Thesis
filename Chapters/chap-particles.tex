@@ -1,0 +1,286 @@
+
+\chapter{Modelling of charged particles}
+
+
+In this chapter we will explain some basic principles of modelling
+of the charged particle motion under the influence of other particles
+and external electromagnetic fields. In the spirit of the previous chapter...
+
+\comment{maybe put some sauce here}
+
+\section{Analytic solutions -- drifts}
+\comment{Cite Chen, Fitzpatrick}
+
+Under influence of the electric field $\mb E$ and magnetic field $\mb B$,
+the motion of a particle with a mass $m$ and a charge $q$ is governed by
+the Newton equation with the Lorentz force
+\begin{equation}
+    m\frac{\de \mb v}{\de t} = q(\mb E + \mb v\times\mb B)\,.
+\end{equation}
+There are a few---exact or approximate---analytic solutions to this
+equation in special configurations of electromagnetic fields. These
+special cases are very important for understanding the behavior of the
+charged particles in arbitrary electromagnetic fields. The solutions
+relevant for this work will now be introduced for further reference.
+
+We shall start our discussion with the simplest non-trivial case,
+which is the case of constant homogeneous magnetic field
+$\mb B = \mb B_0$ and zero electric field.
+We can easily see that the Lorentz force is
+perpendicular to the magnetic field, therefore the motion along
+the field lines is unrestricted by the magnetic field. It can be further
+observed, that the magnetic field can not do work on the particle,
+because the Lorentz force is perpendicular to the velocity direction.
+Therefore the particle energy remains constant. Obviously, a motion
+with a constant force perpendicular to the direction of motion
+yields a circular trajectory in the plane perpendicular to the
+magnetic field, called {\em gyration}. The radius of gyration $r_g$, also
+known as the Larmor radius, can be
+determined by equating the magnitudes of the centripetal force and the
+Lorentz force in the equation
+\begin{equation}
+    |q|v_\perp B = \frac{mv_\perp^2}{r_g}\,,
+\end{equation}
+where $v_\perp$ is the component of initial velocity perpendicular to $\mb B$
+and $B$ is the magnitude of the magnetic field. The gyroradius is therefore
+given by the equation
+\begin{equation}
+    r_g = \frac{mv_\perp}{|q|B}\,.
+    \label{eq:part:rg}
+\end{equation}
+We immediately obtain the gyrofrequency, also known as cyclotron frequency, in
+the form
+\begin{equation}
+    \omega_c = \frac{v_\perp}{r_g} = \frac{|q|B}{m}\,.
+    \label{eq:part:omegac}
+\end{equation}
+
+To obtain an explicit formula for the trajectory, we can solve the
+equation of motion directly. We orient the $z$ coordinate parallel
+to the magnetic field $(\mb B=B\hat{\mb z})$ and the $x$ coordinate parallel
+to the initial velocity of the particle $(\mb v_0 = v_\perp\hat{\mb x})$.
+The origin of the coordinate system
+will be the gyration center.
+The equation of motion can be expressed in components as
+\begin{equation}
+    \dot v_x = \frac{qB}{m}v_y\,,\qquad
+    \dot v_y = -\frac{qB}{m}v_x\,,\qquad
+    \dot v_z = 0\,.
+\end{equation}
+By calculating the time derivative of the above equations,
+identifying the gyrofrequency, and substituting
+for $\dot v_x$ and $\dot v_y$ we obtain
+\begin{align}
+    \ddot v_x &= -\omega_c^2 v_x\,,\quad
+              &\ddot v_y &= -\omega_c^2 v_y\,.
+\end{align}
+These harmonic oscillator equations have solutions which satisfy the initial
+conditions and motion equations in the form
+\begin{align}
+    v_x &= v_\perp\cos(\omega_c t)\,,\quad
+        &v_y &= -v_\perp\sign(q)\sin(\omega_c t)\,,
+    \label{eq:part:gyrationv}
+\end{align}
+where $v_\perp$ is the
+initial velocity component perpendicular to $\mb B$. Finally, integrating
+the solutions for velocity yields the equations of trajectories, where we
+can identify the previously defined gyroradius $r_g$
+\begin{align}
+    x &= r_g\sin(\omega_c t)\,,\quad
+      &y &= r_g\sign(q)\cos(\omega_c t)\,.
+    \label{eq:part:gyrationx}
+\end{align}
+
+If we superimpose constant uniform electric and magnetic fields $\mb E$
+and $\mb B$ respectively, an analytic solution can still be obtained.
+According to the previous discussion, the unrestricted motion parallel
+to the magnetic field is described by a constant acceleration
+$|q|E_\|/m$, where $E_\|$ is the component of the electric field
+parallel to $\mb B$. Without loss of generality we now define $\mb E$ to
+be perpendicular to $\mb B$. A solution to this problem can be obtained
+without going into the details of the particle motion, just by considering
+the transformation formulas for electromagnetic fields between two
+inertial frames moving at relative velocity $\mb V$. The transformation
+identities in the non-relativistic limit $V/c\ll1$ read
+\begin{align}
+    \mb E' &= \mb E + \mb V\times\mb B\,; & \mb B' = \mb B\,.
+\end{align}
+In a frame moving at velocity $\mb V = \mb E\times \mb B/B^2$, the
+transformed field $\mb E'$ reduces to zero. Hence the motion in the
+moving frame is the previously obtained gyration. In the non-moving frame,
+the particle gyrates with a superimposed drifting motion---called
+$\mb E\times\mb B$ drift---at a velocity
+\begin{equation}
+    \mb v_{E} = \frac{\mb E\times\mb B}{B^2}\,.
+\end{equation}
+Perhaps a more intuitive explanation to this drifting effect is obtained
+by realizing that the gyroradius is proportional to the velocity.
+Hence it is smaller in regions with higher
+potential energy. During each gyration the particle travels a slightly
+longer path on the low-potential side of its trajectory. This difference
+accounts for the overall drifting motion.
+
+This solution can be generalized to any force field $\mb F$ by substituting
+$\mb F$ for $q\mb E$. The general drift velocity in the crossed fields is
+\begin{equation}
+    \mb v_{F} = \frac{\mb F\times\mb B}{qB^2}\,.
+    \label{eq:part:crossdrift}
+\end{equation}
+
+Let us now move on to the case of an inhomogeneous magnetic field with a zero
+electric field. In this case, analytic solutions do not exist and we shall
+use the method of averaging.
+
+Consider first a situation where the gradient
+of the magnetic field is perpendicular to the field \ie\ $\nabla B\perp\mb B$.
+Without loss of generality we orient the magnetic field along $z$ and
+the gradient along $y$.
+For the method of averaging to be applicable we assume that the magnetic
+field changes
+slowly on the scale of one gyroradius \ie
+\begin{equation}
+r_g\nabla B \ll B\,.
+\end{equation}
+The variation of $\mb B$ can now be treated as a perturbation. The lowest
+order correction to the unperturbed trajectory is obtained by averaging
+the Lorentz force $\mb F$ over one unperturbed orbit. It follows from the
+symmetry
+of the problem, that the only nonzero average component can be in the $z$
+direction. Thanks to its slow variation, the magnetic field value can be
+replaced by its Taylor expansion from the gyration center
+\begin{equation}
+    \mb B = \mb B_0 + (\mb r\cdot\nabla)\mb B + O(r^2)\,.
+\end{equation}
+The $y$ component of the Lorentz force
+can be evaluated using the Taylor expansion
+for $B$ in combination with the equations of the gyration orbit
+\eqref{eq:part:gyrationx} and \eqref{eq:part:gyrationx}
+\begin{equation}
+    F_y = -qv_xB_z(y) = -qv_\perp\cos(\omega_c t)
+    \left(B_0+r_g\sign(q)\cos(\omega_c t)\frac{\partial B}{\partial y}\right)\,.
+\end{equation}
+Averaging this equation over one gyration loop leads us to
+\begin{equation}
+    \left<F_y\right> = -qv_\perp r_g\sign(q)
+    \frac{1}{2}\frac{\partial B}{\partial y}\,.
+\end{equation}
+Or more generally
+\begin{equation}
+    \left<\mb F\right> = -qv_\perp r_g\sign(q)
+    \nabla B/2,.
+\end{equation}
+This average force again leads to a drifting motion which can be expressed
+using equation \eqref{eq:part:crossdrift}
+\begin{equation}
+    \mb v_{\text{mag}} = v_\perp r_g \sign(q)\frac{1}{2}
+    \frac{\mb B\times\nabla B}{B^2}
+\end{equation}
+This drift is called {\em magnetic} or {\em grad-B} drift.
+
+At last we will discuss the effects of a gradient in $\mb B$ parallel to
+the magnetic field
+\ie $\nabla B\|\mb B$. This situation is especially important for our
+experiment, which will be introduced in the next chapter.
+Due to its zero divergence, the magnetic field cannot be parallel
+to its gradient in a whole three dimensional
+volume. We will assume that the condition is satisfied only on
+the $z$ axis in cylindrical coordinates \ie\ $\mb B(r=0) \| \nabla B(r=0)$
+and $\mb B(r=0, z)= B(r=0,z) \hat{\mb z}$. We further assume that the field is
+rotationally symmetric around the $z$ axis.
+The magnetic field must have a radial component,
+which can be estimated in the vicinity of the $z$ axis using the
+zero-divergence relation of the Maxwell equations in the cylindrical coordinates
+\begin{equation}
+    \frac{1}{r}\frac{\partial}{\partial r}(rB_r) + 
+    \frac{\partial B_z}{\partial z} = 0\,,
+\end{equation}
+from which follows, assuming slowly varying field
+\begin{equation}
+    B_r\approx-\frac{r}{2}\left.\frac{\partial B_z}{\partial z}\right|_{z=0}\,.
+    \label{eq:part:Br}
+\end{equation}
+The azimuthal component of the field is zero thanks to the rotational symmetry
+and the absence of electric currents.
+Similarly to the previous case, we define an unperturbed trajectory with
+the gyration center on the $z$ axis. Due to the field symmetry, the only
+net force acting on the test particle must be in the $z$ direction. The
+$z$ component of the Lorentz force in the cylindrical coordinates is 
+$F_z = -qv_\theta B_r$. Plugging into this expression $B_r$ from 
+\eqref{eq:part:Br} yields
+\begin{equation}
+    F_z = \frac{1}{2}qv_\theta r\frac{\partial B_z}{\partial z}\,.
+\end{equation}
+It can be seen from the Lorentz force in our configuration,
+that $qv_\theta = -|q|v_\perp$. Averaging of this constant expression
+is trivial and inserting $r=r_g$ from expression \eqref{eq:part:rg}
+leads to
+\begin{equation}
+    \left<F_z\right> = -\frac{1}{2}\frac{mv_\perp^2}{B}
+    \frac{\partial B_z}{\partial z}\,.
+\end{equation}
+We now define the magnetic moment $\mu$ as
+\begin{equation}
+    \mu = \frac{1}{2}\frac{mv_\perp^2}{B}\,.
+    \label{eq:part:mu}
+\end{equation}
+This force can be generalized in the form
+\begin{equation}
+    \mb F_\|  = -\mu(\hat{\mb B}\cdot\nabla)\mb B\,,
+\end{equation}
+where $\hat{\mb B}$ is a unit in the direction of $\mb B$. Defining a vector
+magnetic dipole $\mb\mu = \mu\hat{\mb B}$ we see, that this is actually
+the well known force exerted on a magnetic dipole
+\begin{equation}
+    \mb F_\|  = -({\mb\mu}\cdot\nabla)\mb B\,.
+\end{equation}
+
+It may seem that the magnetic field can do work through this
+force---by accelerating particles along the field lines. We will show the
+essence of this apparent work by looking at the behavior of the magnetic
+moment during this acceleration.
+
+We start from the motion equation for the gyration center. The equation
+can be projected along $\mb B$ by scalar multiplication with $\hat{\mb B}$.
+Like in the previous discussion we assume that the curvature of $\mb B$ is
+negligible along the path. Therefore the projection can be exchanged with
+differentiation leading to
+\begin{equation}
+    m\frac{\de{\hat{\mb B}\cdot\mb v}}{\de t}  =
+    -\mu(\hat {\mb B}\cdot\nabla)B\,.
+\end{equation}
+We identify the parallel velocity $v_\| = \hat{\mb B}\cdot\mb v$ and multiply
+the equation by $v_\|$ to obtain
+\begin{equation}
+    mv_\|\frac{\de{v_\|}}{\de t}  =
+    -\mu (v_\|\hat {\mb B}\cdot\nabla)B\,.
+\end{equation}
+The left hand side can be rewritten as a derivative of energy. The right hand
+side can interpreted as a convective derivative along the trajectory
+\begin{equation}
+    \frac{\de}{\de t}\left(\frac{1}{2}mv_\|^2\right)  =
+    -\mu \frac{\de B}{\de t}\,.
+\end{equation}
+Using the law of energy conservation we can replace $v_\|$ by $v_\perp$
+\begin{equation}
+    \frac{\de}{\de t}\left(\frac{1}{2}mv_\perp^2\right)  =
+    \mu \frac{\de B}{\de t}\,.
+\end{equation}
+Finally substituting the magnetic moment from the equation \eqref{eq:part:mu}
+yields
+\begin{equation}
+    \frac{\de}{\de t}\left(\mu B\right)  =
+    \mu \frac{\de B}{\de t}\,.
+\end{equation}
+
+
+
+
+
+
+
+
+\section{numerical integration}, HARHA
+
+collisions - Coulomb, Langevin
+
+Particle-in-cell???
